@@ -1,0 +1,16 @@
+version: '3'
+services:
+  server:
+    image: your_server_image  # Replace with the actual server image if needed
+    ports:
+      - "5000:5000"
+
+  client:
+    build:
+      context: .  # Builds the Dockerfile in the current directory
+      dockerfile: Dockerfile  # Replace with the name if different
+    depends_on:
+      - server
+    environment:
+      - SERVER_HOST=server
+      - SERVER_PORT=5000
