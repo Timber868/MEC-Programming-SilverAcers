@@ -4,6 +4,7 @@ from receive import *
 from move import Move
 import random
 from request_sender import start_game, send_move, end_game
+from move import move
 
 def is_valid_corner_placement(board, x, y, piece, orientation):
     """
@@ -28,7 +29,7 @@ def is_valid_corner_placement(board, x, y, piece, orientation):
     touches_corner = False
     for i in range(len(rotated_piece)):
         for j in range(len(rotated_piece[i])):
-            if rotated_piece[i][j] == 1:  # Only consider colored spaces
+            if rotated_piece[i][j] == 1 and board[x+i][y+j] == 0:  # Only consider colored spaces
                 # Check for invalid side contact
                 for dx, dy in side_directions:
                     new_x, new_y = x + i + dx, y + j + dy
@@ -119,7 +120,7 @@ def rotate_piece(self, piece, orientation):
         raise ValueError("Invalid orientation")
 
 
-def generate_moves (positions : list[tuple[int]], pieces : list[piece], ):
+def generate_moves (board, positions : list[tuple[int]], pieces : list[Piece.piece], ):
     moves = []
     positions = get_positions()
     orientations = ["UP", "RIGHT", "DOWN", "LEFT"]
@@ -127,7 +128,7 @@ def generate_moves (positions : list[tuple[int]], pieces : list[piece], ):
         for orientation in orientations:
             for position in positions:
                 if is_valid_corner_placement(board, position[0], position[1], piece, orientation):
-                    moves.append( Move(piece, position, orientation, board))
+                    moves.append( move.Move(piece, position, orientation, board))
     return moves
 def get_positions ():
     positions = list [tuple[int]]

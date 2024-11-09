@@ -25,10 +25,12 @@ class Move:
     
     def move_score(self, board):
         piece_score= self.piece.points
+
         piece_position= self.piece.position
         difference_x= abs(10-piece_position[0])
         difference_y= abs(10-piece_position[1])
         difference_center=difference_x + difference_y
+
         piece_shape= self.piece.shape
         for i in range(len(piece_shape)):
             return
