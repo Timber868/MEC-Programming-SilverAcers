@@ -32,29 +32,55 @@ def main():
     #Create the pieces we can use
     pieces = piece.Piece.all_pieces
 
-    game_ongoing = True
-    while game_ongoing:
-        #Get the piece we want to use
-        piece_to_use = getMaxPiece(pieces)
-
-        try:
+    #Our first two moves are fixed
+    try:
             #Send the move
-            statusCode, data = request.send_move(0, 0, "UP", piece_to_use.piece_id)
-        except Exception as e:
-            print("Error sending move", e)
-            request.end_game()
-            return
+            statusCode, data = request.send_move(0, 10, "UP", 9)
+            print(statusCode)
+
+    except Exception as e:
+        print("Error sending move", e)
+        request.end_game()
+        return
+
+    #Update our board and score
+    score, board = receive.interpretMove(data)
+    
+    #Our first two moves are fixed
+    try:
+            #Send the move
+            statusCode, data = request.send_move(5, 11, "RIGHT", 6)
+            print(statusCode)
+    except Exception as e:
+        print("Error sending move", e)
+        request.end_game()
+        return
+    
+    #Update our board and score
+    score, board = receive.interpretMove(data)
+
+    # game_ongoing = True
+    # while game_ongoing:
+    #     #Get the piece we want to use
+
+    #     try:
+    #         #Send the move
+    #         statusCode, data = request.send_move(0, 10, "UP", 9)
+    #     except Exception as e:
+    #         print("Error sending move", e)
+    #         request.end_game()
+    #         return
         
-        #Update our board and score
-        score, board = receive.interpretMove(data)
+    #     #Update our board and score
+    #     score, board = receive.interpretMove(data)
         
-        #If the status code is not 200, then there was an error sending the move
-        if statusCode != 200:
-            print("Error sending move")
-            request.end_game()
-            return
+    #     #If the status code is not 200, then there was an error sending the move
+    #     if statusCode != 200:
+    #         print("Error sending move")
+    #         request.end_game()
+    #         return
         
-        game_ongoing = False
+    #     game_ongoing = False
 
     print("Total score:", score)
     # while game_ongoing:
