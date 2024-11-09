@@ -12,8 +12,20 @@ def initializeGame(data):
     for pieceDict in pieces:
         piece.Piece(pieceDict["id"], pieceDict["count"], pieceDict["shape"])
 
-    return color, board_id
+    if color == "#FF0000":
+        color_id = 1
+    elif color == "#00FF00":
+        color_id = 2
+    elif color == "#0000FF":
+        color_id = 3
+    elif color == "#FFFF00":
+        color_id = 4
+    return color_id, board_id
 
+def interpretMove(data):
+    board_id = data.get("board")
+    score = data.get("score")
+    return score, interpretBoard(board_id)
 
 def interpretBoard(board_id):
     image_data = base64.b64decode(board_id)
@@ -63,14 +75,3 @@ def interpretBoard(board_id):
         color_matrix.append(row)
     return color_matrix
 
-
-if __name__ == "__main__":
-    requests.post("http://localhost:5001/end_game")
-    errorCode, data = request_sender.start_game()
-    initializeGame(data)
-
-    color, board_id = initializeGame(data)
-
-    matrix = interpretBoard(board_id)
-    for row in matrix:
-        print(row)

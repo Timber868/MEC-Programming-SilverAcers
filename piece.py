@@ -1,5 +1,6 @@
 class Piece:
 	all_pieces = []
+	played_pieces = []
 
 	def __init__(self, piece_id: int, count: int, shape: list[list[int]]):
 		# Initialize the attributes
