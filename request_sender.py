@@ -27,12 +27,12 @@ def send_move(x, y, orientation, piece_id):
         "piece_id": piece_id
     }
 
-    piece = piece.getPiece(piece_id)
-    if(piece == None):
+    pieceToCheck = piece.Piece.getPiece(piece_id)
+    if(pieceToCheck == None):
         print("Piece not found")
         return 404, {"message": "Piece not found"}
     
-    if(piece.count == 0):
+    if(pieceToCheck.count == 0):
         print("Piece is out of stock")
         return 400, {"message": "Piece is out of stock"}
 
@@ -40,7 +40,7 @@ def send_move(x, y, orientation, piece_id):
 
     if response.status_code == 200:
         print("Move sent successfully")
-        piece.count -= 1
+        pieceToCheck.count -= 1
     else:
         print("Error sending move")
 
