@@ -24,33 +24,33 @@ class Move:
         }
     
 
-def updateBoard(board, move):
-    # Extract move details, assuming 'move' is an instance with attributes or methods to access x, y, piece, and color
-    start_x = move.x
-    start_y = move.y
-    piece_shape = move.piece.shape  # Accessing the shape of the piece (2D list)
-    color_code = move.color
+    def updateBoard(board, move):
+        # Extract move details, assuming 'move' is an instance with attributes or methods to access x, y, piece, and color
+        start_x = move.x
+        start_y = move.y
+        piece_shape = move.piece.shape  # Accessing the shape of the piece (2D list)
+        color_code = move.color
 
-    # Create a copy of the board to avoid modifying the original
-    newBoard = [row[:] for row in board]
+        # Create a copy of the board to avoid modifying the original
+        newBoard = [row[:] for row in board]
 
-    # Get the dimensions of the piece
-    piece_height = len(piece_shape)
-    piece_width = len(piece_shape[0]) if piece_height > 0 else 0
+        # Get the dimensions of the piece
+        piece_height = len(piece_shape)
+        piece_width = len(piece_shape[0]) if piece_height > 0 else 0
 
-    # Place the piece on the new board
-    for i in range(piece_height):
-        for j in range(piece_width):
-            if piece_shape[i][j] == 1:  # Only place cells where the piece has a 1
-                # Calculate the actual board position
-                board_x = start_x + i
-                board_y = start_y + j
+        # Place the piece on the new board
+        for i in range(piece_height):
+            for j in range(piece_width):
+                if piece_shape[i][j] == 1:  # Only place cells where the piece has a 1
+                    # Calculate the actual board position
+                    board_x = start_x + i
+                    board_y = start_y + j
 
-                # Ensure we are within the bounds of the board
-                if 0 <= board_x < len(newBoard) and 0 <= board_y < len(newBoard[0]):
-                    newBoard[board_x][board_y] = color_code  # Set the color code on the board
+                    # Ensure we are within the bounds of the board
+                    if 0 <= board_x < len(newBoard) and 0 <= board_y < len(newBoard[0]):
+                        newBoard[board_x][board_y] = color_code  # Set the color code on the board
 
-    return newBoard
+        return newBoard
 
 
     def move_score(self, board):
