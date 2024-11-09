@@ -1,7 +1,7 @@
 import requests
 #file to hold the request sender function
 
-baseURL = "http://localhost:5001"
+baseURL = "http://localhost:5000"
 
 def start_game():
     #send a basic post request to the server to start the game
