@@ -1,5 +1,6 @@
 import numpy as np
 from piece import Piece
+from move import Move
 from receive import *
 from request_sender import start_game, send_move, end_game
 
@@ -64,14 +65,18 @@ def rotate_piece(self, piece, orientation):
         raise ValueError("Invalid orientation")
 
 
-def generate_moves (positions : list[tuple[int]], pieces : list[piece], ):
+def generate_moves (positions : list[tuple[int]], pieces : list[piece],board ):
+    """
+    Generates all the possible moves our player can do
+    :param positions: All the valid positions
+    :param orientation: The orientation of the piece ("UP", "DOWN", "LEFT", "RIGHT").
+    :return: The rotated piece as a 2D list.
+    """
     moves = []
     orientations = ["UP", "RIGHT", "DOWN", "LEFT"]
     for piece in pieces:
         for orientation in orientations:
             for position in positions:
-                if is_valid_corner_placement(position[0],position[1],piece):
-
-        #check if position is valid
-        # if valid put into list moves
+                if is_valid_corner_placement(board, position[0], position[1], piece, orientation):
+                    moves.append( Move(piece, position, orientation, board))
     return moves
