@@ -27,7 +27,7 @@ def is_valid_corner_placement(board, x, y, piece, orientation):
     touches_corner = False
     for i in range(len(rotated_piece)):
         for j in range(len(rotated_piece[i])):
-            if rotated_piece[i][j] == 1:  # Only consider colored spaces
+            if rotated_piece[i][j] == 1 and board[x+i][y+j] == 0:  # Only consider colored spaces
                 # Check for invalid side contact
                 for dx, dy in side_directions:
                     new_x, new_y = x + i + dx, y + j + dy
