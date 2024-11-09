@@ -4,20 +4,9 @@ from receive import *
 from move import Move
 import random
 from request_sender import start_game, send_move, end_game
-from move import move
+from move import Move
 
 def is_valid_corner_placement(board, x, y, piece, orientation):
-    """
-    Checks if the piece placement touches at least one corner of another piece of the same color
-    and does not touch any side of the same color, considering the orientation of the piece.
-
-    :param board: The game board as a 2D list.
-    :param x: x-coordinate of the top-left position of the piece.
-    :param y: y-coordinate of the top-left position of the piece.
-    :param piece: The shape of the piece as a 2D list where colored spaces are marked as 1.
-    :param orientation: The orientation of the piece ('UP', 'DOWN', 'LEFT', 'RIGHT').
-    :return: True if the placement is valid, False otherwise.
-    """
     # Define corner and side directions
     corner_directions = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
     side_directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
@@ -29,22 +18,31 @@ def is_valid_corner_placement(board, x, y, piece, orientation):
     touches_corner = False
     for i in range(len(rotated_piece)):
         for j in range(len(rotated_piece[i])):
-            if rotated_piece[i][j] == 1 and board[x+i][y+j] == 0:  # Only consider colored spaces
+            board_x = x + i
+            board_y = y + j
+
+            # Boundary check
+            if not (0 <= board_x < len(board) and 0 <= board_y < len(board[0])):
+                # Piece extends beyond the board
+                return False
+
+            if rotated_piece[i][j] == 1 and board[board_x][board_y] == 0:  # Only consider colored spaces
                 # Check for invalid side contact
                 for dx, dy in side_directions:
-                    new_x, new_y = x + i + dx, y + j + dy
+                    new_x, new_y = board_x + dx, board_y + dy
                     if 0 <= new_x < len(board) and 0 <= new_y < len(board[0]):
                         if board[new_x][new_y] == 1:
                             return False  # Invalid if touching a side of the same color
 
                 # Check for valid corner contact
                 for dx, dy in corner_directions:
-                    new_x, new_y = x + i + dx, y + j + dy
+                    new_x, new_y = board_x + dx, board_y + dy
                     if 0 <= new_x < len(board) and 0 <= new_y < len(board[0]):
                         if board[new_x][new_y] == 1:
                             touches_corner = True
 
     return touches_corner
+
 
 def isValidMove(matrix, piece, x, y, color):
     rows, cols = 20, 20  # The board dimensions
@@ -100,14 +98,14 @@ def isValidMove(matrix, piece, x, y, color):
     return is_touching_corner
 
 
-def rotate_piece(self, piece, orientation):
+def rotate_piece(piece_shape, orientation):
     """
     Rotates the piece based on the given orientation.
     :param piece: The shape of the piece as a 2D list.
     :param orientation: The orientation of the piece ("UP", "DOWN", "LEFT", "RIGHT").
     :return: The rotated piece as a 2D list.
     """
-    piece_array = np.array(piece)
+    piece_array = np.array(piece_shape)
     if orientation == "UP":
         return piece_array.tolist()
     elif orientation == "RIGHT":
@@ -120,18 +118,19 @@ def rotate_piece(self, piece, orientation):
         raise ValueError("Invalid orientation")
 
 
-def generate_moves (board, positions : list[tuple[int]], pieces : list[Piece.piece], ):
+def generate_moves(board, pieces):
     moves = []
     positions = get_positions()
     orientations = ["UP", "RIGHT", "DOWN", "LEFT"]
     for piece in pieces:
         for orientation in orientations:
             for position in positions:
-                if is_valid_corner_placement(board, position[0], position[1], piece, orientation):
-                    moves.append( move.Move(piece, position, orientation, board))
+                if is_valid_corner_placement(board, position[0], position[1], piece.shape, orientation):
+                    moves.append(Move(piece, position, orientation, board))
     return moves
+
 def get_positions ():
-    positions = list [tuple[int]]
+    positions = []
     for i in range(20):
         for j in range(20):
             positions.append((i,j))
@@ -148,11 +147,13 @@ def return_best_move(moves):
     for move in moves:
         if move.score == best_score:
             best_moves.append(move)
-    if len(best_moves)> 0:
-        return best_move
+    if best_moves:
+        selected_move = random.choice(best_moves)
+        print(f"Selected best move: {selected_move}")  # Debug
+        return selected_move
     else:
-        random_index = random.randint(0,len(best_moves))
-        return best_moves[random_index]
+        print("No moves match the best score.")
+        return None  # Shouldn't occur if moves is not empty
 
 
 

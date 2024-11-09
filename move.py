@@ -8,12 +8,6 @@ class Move:
         self.orientation = orientation
         self.score = self.move_score(board)
 
-    def __repr__(self):
-       # string representation
-        return (f"Move(piece_id={self.piece.id}, "
-                f"position={self.position}, "
-                f"orientation='{self.orientation}')")
-
     def to_dict(self):
        #dictionnary representation
         return {
@@ -26,14 +20,12 @@ class Move:
     def move_score(self, board):
         piece_score= self.piece.points
 
-        piece_position= self.piece.position
+        piece_position= self.position
         difference_x= abs(10-piece_position[0])
         difference_y= abs(10-piece_position[1])
         difference_center=difference_x + difference_y
 
         piece_shape= self.piece.shape
-        for i in range(len(piece_shape)):
-            return
         return ((piece_score/5)*0.7+(difference_center/10)*0.3)*100
 
 
