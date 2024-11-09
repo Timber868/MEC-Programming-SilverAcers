@@ -49,26 +49,12 @@ class Move:
 
 
     def move_score(self, board):
-        corner_opened=0
-        preview = Move.updateBoard(self,board)
-        corner_board=corner.findCornerPos(color, board)
-        corner_move=corner.findCornerPos(color, preview)
-        for i in range(len(corner_board)):
-            for j in range(len(corner_board[i])):
-                if corner_move[i][j]!=corner_board[i][j]:
-                    corner_opened+=1
-
-        piece_score= self.piece.points
-
-        move_position= self.position
-        difference_x= abs(10-move_position[0])
-        difference_y= abs(10-move_position[1])
-        difference_center=difference_x + difference_y
-
-        piece_shape= self.piece.shape
-        for i in range(len(piece_shape)):
-            return
-        return ((piece_score/5)*0.7+(difference_center/10)*0.3)*100
+        score = 0
+        for i in range(len(self.piece.shape)):
+            for j in range(len(self.piece.shape[i])):
+                if self.piece.shape[i][j]!=0:
+                    score += 1
+        return score
 
 
 

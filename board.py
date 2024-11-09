@@ -119,6 +119,8 @@ def rotate_piece(piece_shape, orientation):
 
 
 def generate_moves(board, pieces):
+    print(board)
+    print(pieces)
     moves = []
     positions = get_positions()
     orientations = ["UP", "RIGHT", "DOWN", "LEFT"]

@@ -60,20 +60,25 @@ def main():
     
     #Update our board and score
     score, currentBoard = receive.interpretMove(data)
-    
+
+    boardPlaceholder = currentBoard
+    piecesPlaceholder = pieces
+
+    i = 0
     game_ongoing = True
     while game_ongoing:
+        i += 1
+        if(i==1):
+            currentBoard = boardPlaceholder
+            pieces = piecesPlaceholder
         #Get the piece we want to use
-        print(currentBoard)
-        print(pieces)
-        
+
         moves = Board.generate_moves(currentBoard, pieces)
-        print("moves:", moves)
         best_move = Board.return_best_move(moves)
-        print(best_move)
         try:
             #Send the move
-            statusCode, data = request.send_move(best_move.position[0], best_move.position[1], best_move.orientation, best_move.piece.id)
+            print(best_move.position[0], best_move.position[1], best_move.orientation, best_move.piece.piece_id)
+            statusCode, data = request.send_move(best_move.position[0], best_move.position[1], best_move.orientation, best_move.piece.piece_id)
         except Exception as e:
             print("Error sending move", e)
             print(score)
@@ -81,15 +86,15 @@ def main():
             return
         
         #Update our board and score
-        score, board = receive.interpretMove(data)
+        score, currentBoard = receive.interpretMove(data)
         
         #If the status code is not 200, then there was an error sending the move
         if statusCode != 200:
             print("Error sending move")
             request.end_game()
+            print(score)
             return
         
-        game_ongoing = False
 
     print("Total score:", score)
     # while game_ongoing:
