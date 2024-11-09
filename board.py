@@ -65,7 +65,7 @@ def rotate_piece(self, piece, orientation):
         raise ValueError("Invalid orientation")
 
 
-def generate_moves (positions : list[tuple[int]], pieces : list[piece],board ):
+def generate_moves (pieces : list[piece],board ):
     """
     Generates all the possible moves our player can do
     :param positions: All the valid positions
@@ -73,6 +73,7 @@ def generate_moves (positions : list[tuple[int]], pieces : list[piece],board ):
     :return: The rotated piece as a 2D list.
     """
     moves = []
+    positions = get_positions()
     orientations = ["UP", "RIGHT", "DOWN", "LEFT"]
     for piece in pieces:
         for orientation in orientations:
@@ -80,3 +81,14 @@ def generate_moves (positions : list[tuple[int]], pieces : list[piece],board ):
                 if is_valid_corner_placement(board, position[0], position[1], piece, orientation):
                     moves.append( Move(piece, position, orientation, board))
     return moves
+def get_positions ():
+    positions = list [tuple[int]]
+    for i in range(20):
+        for j in range(20):
+            positions.append((i,j))
+    return positions
+
+def return_best_move(moves):
+
+    for move in moves:
+
