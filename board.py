@@ -3,7 +3,11 @@ from piece import Piece
 from receive import *
 from request_sender import start_game, send_move, end_game
 
+<<<<<<< Updated upstream
 def is_valid_corner_placement(board, x, y, piece, orientation):
+=======
+def is_valid_corner_placement(self, x, y, piece, board):
+>>>>>>> Stashed changes
     """
     Checks if the piece placement touches at least one corner of another piece of the same color
     and does not touch any side of the same color, considering the orientation of the piece.
@@ -19,6 +23,7 @@ def is_valid_corner_placement(board, x, y, piece, orientation):
     corner_directions = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
     side_directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
+<<<<<<< Updated upstream
     # Rotate the piece based on its orientation
     rotated_piece = rotate_piece(piece, orientation)
 
@@ -28,6 +33,12 @@ def is_valid_corner_placement(board, x, y, piece, orientation):
         for j in range(len(rotated_piece[i])):
             if rotated_piece[i][j] == 1:  # Only consider colored spaces
                 # Check for invalid side contact
+=======
+    for i in range(len(piece)):
+        for j in range(len(piece[i])):
+            if piece[i][j] == 1 and board[x+i][y+j]==0:
+                # Check if the piece touches any sides of the same color
+>>>>>>> Stashed changes
                 for dx, dy in side_directions:
                     new_x, new_y = x + i + dx, y + j + dy
                     if 0 <= new_x < len(board) and 0 <= new_y < len(board[0]):
@@ -116,7 +127,11 @@ def rotate_piece(self, piece, orientation):
     else:
         raise ValueError("Invalid orientation")
 
+ 
+    
 
+
+<<<<<<< Updated upstream
 def generate_moves (positions : list[tuple[int]], pieces : list[piece], ):
     moves = []
     positions = get_positions()
@@ -138,3 +153,5 @@ def return_best_move(moves):
 
     for move in moves:
 
+=======
+>>>>>>> Stashed changes
