@@ -3,6 +3,12 @@ import request_sender as request
 import receive
 import piece
 import board as Board
+import os
+
+server_host = os.getenv("SERVER_HOST", "localhost")
+server_port = os.getenv("SERVER_PORT", "5000")
+urlToStartGame = f"http://{server_host}:{server_port}/start_game"
+
 
 def getMaxPiece(pieces):
     maxPiece = pieces[0]
