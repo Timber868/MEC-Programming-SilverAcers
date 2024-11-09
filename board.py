@@ -2,6 +2,7 @@ import numpy as np
 from piece import Piece
 from receive import *
 from request_sender import start_game, send_move, end_game
+from move import move
 
 def is_valid_corner_placement(board, x, y, piece, orientation):
     """
@@ -120,7 +121,7 @@ def rotate_piece(self, piece, orientation):
     
 
 
-def generate_moves (positions : list[tuple[int]], pieces : list[piece], ):
+def generate_moves (board, positions : list[tuple[int]], pieces : list[Piece.piece], ):
     moves = []
     positions = get_positions()
     orientations = ["UP", "RIGHT", "DOWN", "LEFT"]
@@ -128,7 +129,7 @@ def generate_moves (positions : list[tuple[int]], pieces : list[piece], ):
         for orientation in orientations:
             for position in positions:
                 if is_valid_corner_placement(board, position[0], position[1], piece, orientation):
-                    moves.append( Move(piece, position, orientation, board))
+                    moves.append( move.Move(piece, position, orientation, board))
     return moves
 def get_positions ():
     positions = list [tuple[int]]
