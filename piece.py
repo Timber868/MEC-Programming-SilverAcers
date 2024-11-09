@@ -34,3 +34,9 @@ class Piece:
 	def printPieces():
 		for piece in Piece.all_pieces:
 			print(piece)
+
+	def getPiece(piece_id: int):
+		# Find the piece with the given piece_id
+		for piece in Piece.all_pieces:
+			if piece.piece_id == piece_id:
+				return piece

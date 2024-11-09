@@ -1,6 +1,9 @@
 import requests
 #file to hold the request sender function
 
+# Assuming Piece is defined in a module named piece_module
+from piece import Piece
+
 baseURL = "http://localhost:5001"
 
 def start_game():
@@ -26,10 +29,21 @@ def send_move(x, y, orientation, piece_id):
         "piece_id": piece_id
     }
 
+    piece = Piece.getPiece(piece_id)
+    if piece is None:
+        print("Piece not found")
+        return 404, {"message": "Piece not found"}
+    
+    if piece.count == 0:
+        print("Piece out of stock")
+        return 400, {"message": "Piece out of stock"}
+
     response = requests.post(urlToMove, json=data)
 
     if response.status_code == 200:
         print("Move sent successfully")
+        piece.count -= 1
+        
     else:
         print("Error sending move")
 
