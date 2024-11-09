@@ -24,7 +24,8 @@ def initializeGame(data):
 
 def interpretMove(data):
     board_id = data.get("board")
-    return interpretBoard(board_id)
+    score = data.get("score")
+    return score, interpretBoard(board_id)
 
 def interpretBoard(board_id):
     image_data = base64.b64decode(board_id)

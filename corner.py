@@ -41,4 +41,3 @@ if __name__ == '__main__':
 	color = 1
 	for row in matrix:
 	        print(row)
-	print(findCornerPos(color, matrix))
