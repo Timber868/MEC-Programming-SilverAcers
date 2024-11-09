@@ -2,12 +2,12 @@
 import request_sender as request
 import receive
 import piece
+import board as Board
 import os
 
 server_host = os.getenv("SERVER_HOST", "localhost")
 server_port = os.getenv("SERVER_PORT", "5000")
 urlToStartGame = f"http://{server_host}:{server_port}/start_game"
-
 
 
 def getMaxPiece(pieces):
@@ -34,7 +34,7 @@ def main():
     color, board_data = receive.initializeGame(data)
 
     #Set up the starting Matrix
-    board = receive.interpretBoard(board_data)
+    currentBoard = receive.interpretBoard(board_data)
 
     #Create the pieces we can use
     pieces = piece.Piece.all_pieces
@@ -51,7 +51,7 @@ def main():
         return
 
     #Update our board and score
-    score, board = receive.interpretMove(data)
+    score, currentBoard = receive.interpretMove(data)
     
     #Our first two moves are fixed
     try:
@@ -60,34 +60,42 @@ def main():
             print(statusCode)
     except Exception as e:
         print("Error sending move", e)
+        print(score)
         request.end_game()
         return
     
     #Update our board and score
-    score, board = receive.interpretMove(data)
-
-    # game_ongoing = True
-    # while game_ongoing:
-    #     #Get the piece we want to use
-
-    #     try:
-    #         #Send the move
-    #         statusCode, data = request.send_move(0, 10, "UP", 9)
-    #     except Exception as e:
-    #         print("Error sending move", e)
-    #         request.end_game()
-    #         return
+    score, currentBoard = receive.interpretMove(data)
+    
+    game_ongoing = True
+    while game_ongoing:
+        #Get the piece we want to use
+        print(currentBoard)
+        print(pieces)
         
-    #     #Update our board and score
-    #     score, board = receive.interpretMove(data)
+        moves = Board.generate_moves(currentBoard, pieces)
+        print("moves:", moves)
+        best_move = Board.return_best_move(moves)
+        print(best_move)
+        try:
+            #Send the move
+            statusCode, data = request.send_move(best_move.position[0], best_move.position[1], best_move.orientation, best_move.piece.id)
+        except Exception as e:
+            print("Error sending move", e)
+            print(score)
+            request.end_game()
+            return
         
-    #     #If the status code is not 200, then there was an error sending the move
-    #     if statusCode != 200:
-    #         print("Error sending move")
-    #         request.end_game()
-    #         return
+        #Update our board and score
+        score, board = receive.interpretMove(data)
         
-    #     game_ongoing = False
+        #If the status code is not 200, then there was an error sending the move
+        if statusCode != 200:
+            print("Error sending move")
+            request.end_game()
+            return
+        
+        game_ongoing = False
 
     print("Total score:", score)
     # while game_ongoing:

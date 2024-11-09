@@ -1,4 +1,5 @@
 import piece
+import corner
 class Move:
 
     def __init__(self, piece, position, orientation, board):
@@ -7,12 +8,6 @@ class Move:
         self.position = position
         self.orientation = orientation
         self.score = self.move_score(board)
-
-    def __repr__(self):
-       # string representation
-        return (f"Move(piece_id={self.piece.id}, "
-                f"position={self.position}, "
-                f"orientation='{self.orientation}')")
 
     def to_dict(self):
        #dictionnary representation
@@ -24,12 +19,12 @@ class Move:
         }
     
 
-    def updateBoard(board, move):
+    def updateBoard(self, board):
         # Extract move details, assuming 'move' is an instance with attributes or methods to access x, y, piece, and color
-        start_x = move.x
-        start_y = move.y
-        piece_shape = move.piece.shape  # Accessing the shape of the piece (2D list)
-        color_code = move.color
+        start_x = self.x
+        start_y = self.y
+        piece_shape = self.piece.shape  # Accessing the shape of the piece (2D list)
+        color_code = self.color
 
         # Create a copy of the board to avoid modifying the original
         newBoard = [row[:] for row in board]
@@ -54,11 +49,20 @@ class Move:
 
 
     def move_score(self, board):
+        corner_opened=0
+        preview = Move.updateBoard(self,board)
+        corner_board=corner.findCornerPos(color, board)
+        corner_move=corner.findCornerPos(color, preview)
+        for i in range(len(corner_board)):
+            for j in range(len(corner_board[i])):
+                if corner_move[i][j]!=corner_board[i][j]:
+                    corner_opened+=1
+
         piece_score= self.piece.points
 
-        piece_position= self.piece.position
-        difference_x= abs(10-piece_position[0])
-        difference_y= abs(10-piece_position[1])
+        move_position= self.position
+        difference_x= abs(10-move_position[0])
+        difference_y= abs(10-move_position[1])
         difference_center=difference_x + difference_y
 
         piece_shape= self.piece.shape
