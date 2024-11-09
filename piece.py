@@ -2,13 +2,20 @@ class Piece:
 	all_pieces = []
 
 	def __init__(self, piece_id: int, count: int, shape: list[list[int]]):
-        # Initialize the attributes
+		# Initialize the attributes
 		self.piece_id = piece_id
 		self.count = count
 		self.shape = shape
-
+		if self.piece_id >=9:
+			self.points = 5
+		elif self.piece_id >=4:
+			self.points = 4
+		elif self.piece_id >= 2:
+			self.points = 3
+		elif self.piece_id ==1:
+			self.points = 2
+		else: self.points = 1
 		Piece.all_pieces.append(self)
-
 
 	def __str__(self):
 		# Custom string representation of the piece
