@@ -1,6 +1,6 @@
 import piece
 class Move:
-    moves = []
+
     def __init__(self, piece, position, orientation):
 
         self.piece = piece
@@ -21,10 +21,11 @@ class Move:
             "y": self.position[1],
             "orientation": self.orientation
         }
-    def generate_moves (matrix : list[list[int]], pieces : list[piece]):
-        orientations = ["up", "right", "down", "left"]
-        for piece in pieces:
-            for orientation in orientations:
+
+
+
+
+
                 
 
 
