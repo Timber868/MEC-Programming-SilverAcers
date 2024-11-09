@@ -3,7 +3,7 @@ from piece import Piece
 from receive import *
 from request_sender import start_game, send_move, end_game
 
-def is_valid_corner_placement(self, x, y, piece):
+def is_valid_corner_placement(x, y, piece):
     """
     Checks if the piece placement touches at least one corner of another piece of the same color.
     :param x: x-coordinate of the top-left position of the piece.
@@ -52,3 +52,12 @@ def rotate_piece(self, piece, orientation):
         raise ValueError("Invalid orientation")
 
 
+def generate_moves (positions : list[tuple[int]], pieces : list[piece], ):
+    moves = []
+    orientations = ["UP", "RIGHT", "DOWN", "LEFT"]
+    for piece in pieces:
+        for orientation in orientations:
+            for position in positions:
+        #check if position is valid
+        # if valid put into list moves
+    return moves
